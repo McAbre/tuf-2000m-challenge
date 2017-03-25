@@ -6,7 +6,6 @@
 package tuf.pkg2000m;
 
 import com.sun.javaws.Main;
-import controller.Controller;
 import java.io.IOException;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -21,6 +20,9 @@ import javafx.stage.Stage;
  * @author joel_
  */
 public class Tuf2000m extends Application {
+    public static void main(String[] args) {
+        launch(args);
+    }
     
     @Override
     public void start(Stage primaryStage) {
@@ -28,16 +30,11 @@ public class Tuf2000m extends Application {
             @Override
             public void run() {
                 try {
-                    Stage customerStage = new Stage();
                     primaryStage.setResizable(false);
-                    customerStage.setResizable(false);
-                    FXMLLoader viewLoader = new FXMLLoader(getClass().getResource("views/Tuf-2000_view.fxml"));
+                    FXMLLoader viewLoader = new FXMLLoader(getClass().getResource("/view/FXML.fxml"));
                     
-                    Scene cashierScene = new Scene(viewLoader.load());
-                    
-                    primaryStage.setScene(cashierScene);
-                    
-                    Controller c = viewLoader.<Controller>getController();
+                    Scene scene = new Scene(viewLoader.load());
+                    primaryStage.setScene(scene);
                     
                     primaryStage.show();
                     
@@ -46,12 +43,7 @@ public class Tuf2000m extends Application {
                 }
             }
         });
-        
         primaryStage.show();
-    }
-
-    public static void main(String[] args) {
-        launch(args);
     }
     
 }

@@ -10,5 +10,12 @@ package model;
  * @author joel_
  */
 public class Model {
+    //Most of all functionality goes here
+    
+    
+    //Constructor
+    public Model(){
+    }
+    
     
 }
