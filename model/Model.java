@@ -14,12 +14,24 @@ import java.util.Scanner;
  * @author joel_
  */
 public class Model {
+    
+    //Singleton
+    private static Model instance;
+    public static synchronized Model getInstance() {
+        if(instance == null){
+            instance = new Model();
+        }
+        return instance;
+    }
+    private Model(){
+        instance = this;
+    }
+    //Singleton
+    
     //Most of all functionality goes here
     
     
-    //Constructor
-    public Model(){
-    }
+    
     
     //Reads data from URL and converts to CSV string
     public String urlReader(){
@@ -31,10 +43,11 @@ public class Model {
                 result += s.nextLine() + ",";
             }
             return result;
-        }catch(IOException ex) {
+        }catch(Exception ex) {
+            System.out.println("EXCEPTION MFUCKER");
             ex.printStackTrace();
         }
-        return "IOException";
+        return "urlReader failed";
     }
     
     //Returns specific register from the data string as a string
@@ -75,10 +88,10 @@ public class Model {
     }
     
     private double negativeEnergy(String reg21, String reg22){
-        return 7357;
+        return 7357.0;
     }
     
-    private int temperature(String reg33, String reg34){
-        return 7357;
+    private double temperature(String reg33, String reg34){
+        return 7357.0;
     }
 }

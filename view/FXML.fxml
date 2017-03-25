@@ -44,7 +44,7 @@
             <Separator layoutX="71.0" layoutY="213.0" prefWidth="200.0" />
             <Separator layoutX="71.0" layoutY="75.0" prefWidth="200.0" />
             <Label layoutX="91.0" layoutY="222.0" prefHeight="17.0" prefWidth="80.0" text="Last updated:" />
-            <Label fx:id="timeLabel" layoutX="165.0" layoutY="222.0" prefHeight="17.0" prefWidth="92.0" />
+            <Label fx:id="timeLabel" layoutX="165.0" layoutY="222.0" prefHeight="17.0" prefWidth="112.0" />
          </children>
       </AnchorPane>
    </children>

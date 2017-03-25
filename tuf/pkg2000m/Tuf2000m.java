@@ -6,6 +6,7 @@
 package tuf.pkg2000m;
 
 import com.sun.javaws.Main;
+import controller.Controller;
 import java.io.IOException;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -38,8 +39,11 @@ public class Tuf2000m extends Application {
                     
                     primaryStage.show();
                     
+                    Controller c = Controller.getInstance();
+                    c.refreshPressed();
+                    
                 } catch (IOException ex) {
-                    Logger.getLogger(Main.class.getName()).log(Level.SEVERE, null, ex);
+                    ex.printStackTrace();
                 }
             }
         });
