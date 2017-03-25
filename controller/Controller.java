@@ -41,7 +41,7 @@ public class Controller {
     private int refresh(){
         //If all went well return 1 else return -9999
         try{
-            //get data
+            String data = model.urlReader();//get data
             //get signal value
             //get temperature value
             //get negative energy value
