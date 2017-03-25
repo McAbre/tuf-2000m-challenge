@@ -7,7 +7,6 @@ package controller;
 
 import javafx.fxml.FXML;
 import javafx.scene.canvas.Canvas;
-import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
 import model.Model;
@@ -21,16 +20,13 @@ public class Controller {
     //MVC
     private Model model;
     
+    //FXML variables
     @FXML
     private Label timeLabel;
     @FXML
     private TextField signalField, temperatureField, negativeEnergyField;
     @FXML
-    private Button refreshButton;
-    @FXML
     private Canvas graphCanvas;
-    
-    
     
     @FXML
     public void refreshPressed(){
@@ -41,13 +37,21 @@ public class Controller {
     private int refresh(){
         //If all went well return 1 else return -9999
         try{
-            String data = model.urlReader();//get data
+            //get data from the url
+            String data = model.urlReader();
+            
+            //get timestamp
+            String timestamp = data.split(",")[0];
+            
             //get signal value
+            int signal = model.getSignal(data);
             //get temperature value
+            double temperature = model.getTemperature(data);
             //get negative energy value
+            double negEnergyAcc = model.getNegativeEnergy(data);
             
             //update values
-            //update(int signal, double temperature, double negEnergyAcc);
+            //update(signal+"", temperature+"", negEnergyAcc+"", timestamp);
             return 1;
         }catch(Exception e){
             return -9999;
@@ -55,12 +59,17 @@ public class Controller {
     }
     
     //Updates all the values on the screen
-    protected void update(){
+    protected void update(String signal, String temperature, String negEnergyAcc, String timestamp){
         //set signal quality
+        signalField.setText(signal);
         //set temperature
+        temperatureField.setText(temperature);
         //set negative energy
+        negativeEnergyField.setText(negEnergyAcc);
         //set last updated
+        timeLabel.setText(timestamp);
         
         //OPTIONAL: ADD VALUES TO GRAPH?
     }
+
 }

@@ -39,8 +39,46 @@ public class Model {
     
     //Returns specific register from the data string as a string
     private String getRegister(String data, int register){
-        String temp = data.split((register + ":"))[1];
-        temp = temp.split(",")[0];
+        /**
+         * Raw data as csv as such 1:26954, 2:31231, 3:1231231
+         * Step 1: Split at "register:"
+         * 26954, 2:31231, 3:1231231
+         * Step 2: Split at commas and take the first value
+         * 26954
+        */
+        String temp = data.split((register + ":"))[1]; 
+        temp = temp.split(",")[0]; //
         return temp;
+    }
+
+    public int getSignal(String data) {
+        String signal = getRegister(data, 92);
+            
+        return signalQuality(signal);
+    }
+
+    public double getTemperature(String data) {
+        String reg33 = getRegister(data, 33);
+        String reg34 = getRegister(data, 34);
+        return temperature(reg33, reg34);
+    }
+
+    public double getNegativeEnergy(String data) {
+        String reg21 = getRegister(data, 21);
+        String reg22 = getRegister(data, 22);
+        
+        return negativeEnergy(reg21, reg22);
+    }
+    
+    private int signalQuality(String value) {
+        return 7357;
+    }
+    
+    private double negativeEnergy(String reg21, String reg22){
+        return 7357;
+    }
+    
+    private int temperature(String reg33, String reg34){
+        return 7357;
     }
 }
