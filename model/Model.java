@@ -31,8 +31,6 @@ public class Model {
     //Most of all functionality goes here
     
     
-    
-    
     //Reads data from URL and converts to CSV string
     public String urlReader(){
         try {
@@ -44,7 +42,6 @@ public class Model {
             }
             return result;
         }catch(Exception ex) {
-            System.out.println("EXCEPTION MFUCKER");
             ex.printStackTrace();
         }
         return "urlReader failed";
@@ -60,13 +57,12 @@ public class Model {
          * 26954
         */
         String temp = data.split((register + ":"))[1]; 
-        temp = temp.split(",")[0]; //
+        temp = temp.split(",")[0];
         return temp;
     }
 
     public int getSignal(String data) {
         String signal = getRegister(data, 92);
-            
         return signalQuality(signal);
     }
 
@@ -79,16 +75,26 @@ public class Model {
     public double getNegativeEnergy(String data) {
         String reg21 = getRegister(data, 21);
         String reg22 = getRegister(data, 22);
-        
         return negativeEnergy(reg21, reg22);
     }
     
     private int signalQuality(String value) {
-        return 7357;
+        String temp = Long.toBinaryString(Integer.parseInt(value));
+        while(temp.length() < 16){
+            temp = "0" + temp;
+        }
+        //We want the latter half. Because modbus...
+        String signalBinary = temp.substring(temp.length()/2);
+        //2 stands for base 2
+        int signalQuality = Integer.parseInt(signalBinary, 2);
+        return signalQuality;
     }
     
-    private double negativeEnergy(String reg21, String reg22){
-        return 7357.0;
+    //Is this really right? Idk how else to get the correct value though.
+    private double negativeEnergy(String strReg21, String strReg22){
+        int reg21 = Integer.parseInt(strReg21);
+        int reg22 = Integer.parseInt(strReg22);
+        return (reg21-reg22-1);
     }
     
     private double temperature(String reg33, String reg34){
