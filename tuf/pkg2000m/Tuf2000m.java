@@ -5,11 +5,8 @@
  */
 package tuf.pkg2000m;
 
-import com.sun.javaws.Main;
 import controller.Controller;
 import java.io.IOException;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 import javafx.application.Application;
 import javafx.application.Platform;
 import javafx.fxml.FXMLLoader;

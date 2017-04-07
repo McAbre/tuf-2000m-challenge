@@ -5,8 +5,10 @@
  */
 package controller;
 
+import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
 import javafx.scene.control.Label;
+import javafx.scene.control.ListView;
 import javafx.scene.control.TextField;
 import model.Model;
 
@@ -19,7 +21,7 @@ public class Controller {
     
     public Controller(){
         instance = this;
-        refresh();
+        listView = new ListView();
     }
     
     public static synchronized Controller getInstance(){
@@ -34,7 +36,9 @@ public class Controller {
     private Label timeLabel;
     @FXML
     private TextField signalField, temperatureField, negativeEnergyField;
-    //@FXML
+    @FXML
+    private ListView<String> listView;
+    
     //private Canvas graphCanvas;
     
     @FXML
@@ -46,41 +50,51 @@ public class Controller {
     private int refresh(){
         //If all went well return 1 else return -9999
         try{
+            model.emptyList();
             //get data from the url
             String data = model.urlReader();
             
             //get timestamp
             String timestamp = data.split(",")[0];
             
+            //get positive accumulator
+            //double posAcc = model.getPositiveAccumulator(data);
+            //model.addItem(model.fixLength("Positive accumulator", posAcc, "unit"))
+            
             //get signal value
             int signal = model.getSignal(data);
+            model.addItem(model.fixLength("Signal quality", signal+"", "unit"));
             
             //get temperature value
             double temperature = model.getTemperature(data);
+            model.addItem(model.fixLength("Temperature", temperature+"", "celcius"));
             
             //get negative energy value
             double negEnergyAcc = model.getNegativeEnergy(data);
+            model.addItem(model.fixLength("Negative energy accumulator", negEnergyAcc+"", "unit"));
             
             //update values
-            update(signal+"", temperature+"", negEnergyAcc+"", timestamp);
+            System.out.println("timeLabel: " + timeLabel);
+            timeLabel.setText(timestamp);
+            
+            System.out.println("Listview items: " + listView.getItems().size());
+            listView.setItems(model.getItems());
             return 1;
         }catch(Exception e){
+            e.printStackTrace();
             return -9999;
         }
     }
     
-    //Updates all the values on the screen
-    protected void update(String signal, String temperature, String negEnergyAcc, String timestamp){
-        //set signal quality
-        signalField.setText(signal);
-        //set temperature
-        temperatureField.setText(temperature);
-        //set negative energy
-        negativeEnergyField.setText(negEnergyAcc);
-        //set last updated
-        timeLabel.setText(timestamp);
-        
-        //OPTIONAL: ADD VALUES TO GRAPH?
+    @FXML
+    void listviewDraggingStart(){
+        System.out.println("controller.Controller.listviewDraggingStart()");
     }
-
+    
+    @FXML
+    void listviewDraggingStop(){
+        System.out.println("controller.Controller.listviewDraggingStop()");
+    }
+    
+    
 }

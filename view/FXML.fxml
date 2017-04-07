@@ -3,29 +3,33 @@
 <?import java.lang.Double?>
 <?import javafx.scene.control.Button?>
 <?import javafx.scene.control.Label?>
+<?import javafx.scene.control.ListView?>
+<?import javafx.scene.control.ScrollPane?>
 <?import javafx.scene.control.Separator?>
 <?import javafx.scene.control.TextField?>
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.shape.Line?>
 <?import javafx.scene.shape.Polyline?>
 <?import javafx.scene.shape.Rectangle?>
+<?import javafx.scene.text.Font?>
 
-<AnchorPane id="AnchorPane" prefHeight="390.0" prefWidth="340.0" xmlns="http://javafx.com/javafx/8.0.60" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controller.Controller">
+<AnchorPane id="AnchorPane" prefHeight="720.0" prefWidth="405.0" xmlns="http://javafx.com/javafx/8.0.60" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controller.Controller">
    <children>
-      <AnchorPane minWidth="-Infinity" prefHeight="390.0" prefWidth="340.0">
+      <AnchorPane minWidth="-Infinity" prefHeight="720.0" prefWidth="405.0">
          <children>
-            <Rectangle arcHeight="5.0" arcWidth="5.0" fill="#0d0d0d09" height="402.0" stroke="BLACK" strokeType="INSIDE" width="340.0" />
-            <Rectangle arcHeight="5.0" arcWidth="5.0" fill="#b5b5b5" height="238.0" layoutX="26.0" layoutY="31.0" stroke="BLACK" strokeType="INSIDE" width="286.0" />
-            <Rectangle arcHeight="5.0" arcWidth="5.0" fill="#d7d7d7" height="224.0" layoutX="33.0" layoutY="38.0" stroke="BLACK" strokeType="INSIDE" width="272.0" />
-            <Button fx:id="refreshButton" layoutX="147.0" layoutY="275.0" mnemonicParsing="false" onAction="#refreshPressed" text="Refresh" />
-            <Label layoutX="51.0" layoutY="94.0" prefHeight="17.0" prefWidth="80.0" text="Signal Quality" />
-            <Label layoutX="55.0" layoutY="136.0" prefHeight="17.0" prefWidth="73.0" text="Temperature" />
-            <Label layoutX="34.0" layoutY="178.0" prefHeight="17.0" prefWidth="92.0" text="Negative Energy" />
-            <TextField fx:id="signalField" editable="false" layoutX="131.0" layoutY="90.0" />
-            <TextField fx:id="temperatureField" editable="false" layoutX="131.0" layoutY="132.0" />
-            <TextField fx:id="negativeEnergyField" editable="false" layoutX="131.0" layoutY="174.0" />
-            <Label layoutX="119.0" layoutY="48.0" prefHeight="17.0" prefWidth="112.0" text="Tuf-2000m Monitor" textAlignment="CENTER" />
-            <Polyline fill="#c7c6d0" layoutX="175.0" layoutY="316.0" opacity="0.34" scaleX="0.5" scaleY="0.5" stroke="#0000004d" strokeLineJoin="BEVEL" strokeType="OUTSIDE">
+            <Rectangle arcHeight="5.0" arcWidth="5.0" fill="#0d0d0d09" height="720.0" stroke="BLACK" strokeType="INSIDE" width="405.0" />
+            <Rectangle arcHeight="5.0" arcWidth="5.0" fill="#b2b2b2" height="722.0" stroke="#00000059" strokeType="INSIDE" width="405.0" />
+            <Rectangle arcHeight="5.0" arcWidth="5.0" fill="#d7d7d7" height="674.0" stroke="#fff4f4bd" strokeType="INSIDE" width="363.0" AnchorPane.bottomAnchor="21.0" AnchorPane.leftAnchor="21.0" AnchorPane.rightAnchor="21.0" AnchorPane.topAnchor="21.0" />
+            <Button fx:id="refreshButton" layoutX="172.0" layoutY="597.0" mnemonicParsing="false" onAction="#refreshPressed" prefHeight="39.0" prefWidth="63.0" text="Refresh" />
+            <TextField fx:id="signalField" editable="false" layoutX="56.0" layoutY="90.0" prefHeight="33.0" prefWidth="230.0" promptText="Search">
+               <font>
+                  <Font size="18.0" />
+               </font></TextField>
+            <Label layoutX="116.0" layoutY="47.0" prefHeight="27.0" prefWidth="173.0" text="Tuf-2000m Monitor" textAlignment="CENTER" textFill="#47499a" textOverrun="CLIP">
+               <font>
+                  <Font name="System Bold Italic" size="18.0" />
+               </font></Label>
+            <Polyline fill="#c7c6d0" layoutX="204.0" layoutY="652.0" opacity="0.34" scaleX="0.5" scaleY="0.5" stroke="#0000004d" strokeLineJoin="BEVEL" strokeType="OUTSIDE">
               <points>
                 <Double fx:value="-50.0" />
                 <Double fx:value="-40.0" />
@@ -37,15 +41,29 @@
                 <Double fx:value="-40.0" />
               </points>
             </Polyline>
-            <Line endX="100.0" layoutX="308.0" layoutY="265.0" rotate="45.0" scaleX="0.05" startX="-100.0" />
-            <Line endX="100.0" layoutX="30.0" layoutY="35.0" rotate="45.0" scaleX="0.05" startX="-100.0" />
-            <Line endX="100.0" fill="#d3cdcd" layoutX="308.0" layoutY="35.0" rotate="135.0" scaleX="0.05" startX="-100.0" />
-            <Line endX="100.0" layoutX="30.0" layoutY="265.0" rotate="135.0" scaleX="0.05" startX="-100.0" />
-            <Separator layoutX="71.0" layoutY="213.0" prefWidth="200.0" />
-            <Separator layoutX="71.0" layoutY="75.0" prefWidth="200.0" />
-            <Label layoutX="91.0" layoutY="222.0" prefHeight="17.0" prefWidth="80.0" text="Last updated:" />
-            <Label fx:id="timeLabel" layoutX="165.0" layoutY="222.0" prefHeight="17.0" prefWidth="112.0" />
+            <Line endX="100.0" layoutX="308.0" layoutY="265.0" rotate="45.0" scaleX="0.05" startX="-100.0" visible="false" />
+            <Line endX="100.0" layoutX="30.0" layoutY="35.0" rotate="45.0" scaleX="0.05" startX="-100.0" visible="false" />
+            <Line endX="100.0" fill="#d3cdcd" layoutX="308.0" layoutY="35.0" rotate="135.0" scaleX="0.05" startX="-100.0" visible="false" />
+            <Line endX="100.0" layoutX="30.0" layoutY="265.0" rotate="135.0" scaleX="0.05" startX="-100.0" visible="false" />
+            <Separator layoutX="103.0" layoutY="588.0" prefWidth="200.0" />
+            <Separator layoutX="103.0" layoutY="73.0" prefWidth="200.0" />
+            <Label layoutX="21.0" layoutY="667.0" prefHeight="25.0" prefWidth="80.0" text="Last updated:" />
+            <Label fx:id="timeLabel" layoutX="101.0" layoutY="666.0" prefHeight="27.0" prefWidth="112.0" />
+          <AnchorPane layoutX="56.0" layoutY="139.0" minHeight="0.0" minWidth="0.0" prefHeight="443.0" prefWidth="612.0" AnchorPane.bottomAnchor="143.0" AnchorPane.leftAnchor="56.0" AnchorPane.rightAnchor="56.0" AnchorPane.topAnchor="139.0">
+               <children>
+                  <ListView fx:id="listView" focusTraversable="false" onDragDetected="#listviewDraggingStart" onDragDone="#listviewDraggingStop" prefHeight="443.0" prefWidth="293.0" />
+               </children>
+            </AnchorPane>
+            <Button layoutX="286.0" layoutY="90.0" mnemonicParsing="false" prefHeight="39.0" prefWidth="63.0" text="Go">
+               <font>
+                  <Font size="18.0" />
+               </font></Button>
          </children>
       </AnchorPane>
+      <ScrollPane layoutX="-283.0" layoutY="117.0" prefHeight="200.0" prefWidth="200.0">
+        <content>
+          <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="200.0" prefWidth="200.0" />
+        </content>
+      </ScrollPane>
    </children>
 </AnchorPane>
