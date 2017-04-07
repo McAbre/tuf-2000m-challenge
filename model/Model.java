@@ -53,10 +53,10 @@ public class Model {
     }
     
     public String fixLength(String type, String value, String unit){
-        int width = 350;
+        int width = 335;
         String spaces = "";
         
-        Font font = new Font("Arial", Font.PLAIN, 14);
+        Font font = new Font("Arial", Font.PLAIN, 13);
         FontMetrics metrics = new FontMetrics(font) {  
         };
         Rectangle2D bounds = metrics.getStringBounds(type + spaces + value + " " + unit, null);  
@@ -264,7 +264,6 @@ public class Model {
         double val2 = real4(reg2, reg1);
         int mag1 = magnitude(val1);
         int mag2 = magnitude(val2);
-        System.out.println("magnitude("+reg1+","+reg2+"): " + "val1="+val1+" val2="+val2 + " mag= " + mag1 + " | " + mag2);
         if(mag1 < mag2 && mag1 != 0 || mag1 == 0 && mag2 > 12){
             result = val1;
         }else{

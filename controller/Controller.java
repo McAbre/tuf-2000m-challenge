@@ -63,7 +63,7 @@ public class Controller {
     @FXML
     public void refreshPressed(){
         //Refresh all values
-        System.out.println(refresh());
+        refresh();
     }
     
     private int refresh(){
@@ -109,16 +109,12 @@ public class Controller {
             
             //get negative energy accumulator
             double negEnergyAcc = model.getLong(data, 21, 22);
-            System.out.println("controller.Controller.negEnergyAcc(): "+negEnergyAcc);
             double negNrgAccDecFrac = model.getReal4(data, 23, 24);
-            System.out.println("controller.Controller.negNrgAccDecFrac(): "+negNrgAccDecFrac);
             model.addItem(model.fixLength("Negative energy accumulator", (model.round(2, negNrgAccDecFrac*negEnergyAcc))+"", "J"));
             
             //get net accumulator
             double netAcc = model.getLong(data, 25, 26);
-            System.out.println("controller.Controller.netAcc(): "+netAcc);
             double netDecFrac = model.getReal4(data, 27, 28);
-            System.out.println("controller.Controller.netDecFrac(): "+netDecFrac);
             model.addItem(model.fixLength("Net accumulator", model.round(2, netAcc*netDecFrac)+"", ""));
             
             //get net energy accumulator
@@ -216,10 +212,8 @@ public class Controller {
             model.addItem(model.fixLength("Reynolds number", Reynold+"", ""));;
             
             //update values
-            System.out.println("timeLabel: " + timeLabel);
             timeLabel.setText(timestamp);
             
-            System.out.println("Listview items: " + listView.getItems().size());
             listView.setItems(model.getItems());
             return 1;
         }catch(Exception e){
