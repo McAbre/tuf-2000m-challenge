@@ -5,11 +5,11 @@
  */
 package controller;
 
-import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
 import javafx.scene.control.Label;
 import javafx.scene.control.ListView;
 import javafx.scene.control.TextField;
+import javafx.scene.input.KeyEvent;
 import model.Model;
 
 /**
@@ -35,12 +35,31 @@ public class Controller {
     @FXML
     private Label timeLabel;
     @FXML
-    private TextField signalField, temperatureField, negativeEnergyField;
+    private TextField searchBar;
     @FXML
     private ListView<String> listView;
     
-    //private Canvas graphCanvas;
-    
+    @FXML
+    void listviewDraggingStart(){
+        System.out.println("controller.Controller.listviewDraggingStart()");
+    }
+    @FXML
+    void listviewDraggingStop(){
+        System.out.println("controller.Controller.listviewDraggingStop()");
+    }
+    @FXML
+    public void searchbarKeyPress(KeyEvent e){
+        listView.setItems(model.search(searchBar.getText()));
+    }
+    @FXML
+    public void clearButtonPressed(){
+        searchBar.setText("");
+        listView.setItems(model.getItems());
+    }
+    @FXML
+    public void searchbarAction(){
+        System.out.println("controller.Controller.goButtonPressed()");
+    }
     @FXML
     public void refreshPressed(){
         //Refresh all values
@@ -76,12 +95,12 @@ public class Controller {
             //get positive accumulator
             double posAcc = model.getLong(data, 9, 10);
             double posAccDecFrac = model.getReal4(data, 11, 12);
-            model.addItem(model.fixLength("Positive accumulator", model.round(2,(posAcc*posAccDecFrac))+"", "unit"));
+            model.addItem(model.fixLength("Positive accumulator", model.round(2,(posAcc*posAccDecFrac))+"", ""));
             
             //get negative accumulator
             double negAcc = model.getLong(data, 13, 14);
             double negAccDecFrac = model.getReal4(data, 15, 16);
-            model.addItem(model.fixLength("Negative accumulator", model.round(2, (negAcc*negAccDecFrac))+"", "unit"));
+            model.addItem(model.fixLength("Negative accumulator", model.round(2, (negAcc*negAccDecFrac))+"", ""));
             
             //get positive energy accumulator
             double posEnergyAcc = model.getLong(data, 17, 18);
@@ -100,7 +119,7 @@ public class Controller {
             System.out.println("controller.Controller.netAcc(): "+netAcc);
             double netDecFrac = model.getReal4(data, 27, 28);
             System.out.println("controller.Controller.netDecFrac(): "+netDecFrac);
-            model.addItem(model.fixLength("Net accumulator", model.round(2, netAcc*netDecFrac)+"", "unit"));
+            model.addItem(model.fixLength("Net accumulator", model.round(2, netAcc*netDecFrac)+"", ""));
             
             //get net energy accumulator
             double netNrgAcc = model.getLong(data, 29, 30);
@@ -117,15 +136,15 @@ public class Controller {
             
             //get analog input AI3
             double ai3 = model.round(2, model.getReal4(data, 37, 38));
-            model.addItem(model.fixLength("Analog input AI3", ai3+"", "unit"));
+            model.addItem(model.fixLength("Analog input AI3", ai3+"", ""));
             
             //get analog input AI4
             double ai4 = model.round(2,  model.getReal4(data, 39, 40));
-            model.addItem(model.fixLength("Analog input AI4", ai4+"", "unit"));
+            model.addItem(model.fixLength("Analog input AI4", ai4+"", ""));
             
             //get analog input AI5
             double ai5 = model.round(2, model.getReal4(data, 41, 42));
-            model.addItem(model.fixLength("Analog input AI5", ai5+"", "unit"));
+            model.addItem(model.fixLength("Analog input AI5", ai5+"", ""));
             
             //get analog input AI5
             double ai3current = model.round(2, model.getReal4(data, 43, 44));
@@ -208,16 +227,5 @@ public class Controller {
             return -9999;
         }
     }
-    
-    @FXML
-    void listviewDraggingStart(){
-        System.out.println("controller.Controller.listviewDraggingStart()");
-    }
-    
-    @FXML
-    void listviewDraggingStop(){
-        System.out.println("controller.Controller.listviewDraggingStop()");
-    }
-    
     
 }

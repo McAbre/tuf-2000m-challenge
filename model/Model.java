@@ -53,7 +53,7 @@ public class Model {
     }
     
     public String fixLength(String type, String value, String unit){
-        int width = 315;
+        int width = 350;
         String spaces = "";
         
         Font font = new Font("Arial", Font.PLAIN, 14);
@@ -71,6 +71,13 @@ public class Model {
         return (type + spaces + value + " " + unit);
     }
     
+    public ObservableList search(String searchPhrase){
+        ObservableList matches = FXCollections.observableArrayList();
+        for(String item: items){
+            if(item.toLowerCase().contains(searchPhrase.toLowerCase())) matches.add(item);
+        }
+        return matches;
+    }
     
     //Reads data from URL and converts to CSV string
     public String urlReader(){
