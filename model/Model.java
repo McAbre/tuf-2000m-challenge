@@ -53,10 +53,10 @@ public class Model {
     }
     
     public String fixLength(String type, String value, String unit){
-        int width = 320;
+        int width = 315;
         String spaces = "";
         
-        Font font = Font.getFont("Default");
+        Font font = new Font("Arial", Font.PLAIN, 14);
         FontMetrics metrics = new FontMetrics(font) {  
         };
         Rectangle2D bounds = metrics.getStringBounds(type + spaces + value + " " + unit, null);  
@@ -89,7 +89,7 @@ public class Model {
     }
     
     //Returns specific register from the data string as a string
-    private String getRegister(String data, int register){
+    public String getRegister(String data, int register){
         /**
          * Raw data as csv as such 1:26954, 2:31231, 3:1231231
          * Step 1: Split at "register:"
@@ -102,25 +102,49 @@ public class Model {
         return temp;
     }
     
-    private double round(int decimalPoints, double value){
+    public double round(int decimalPoints, double value){
         return BigDecimal.valueOf(value).setScale(decimalPoints, RoundingMode.CEILING).doubleValue();
+    }
+    
+    public double getLong(String data, int reg0, int reg){
+        String reg1 = getRegister(data, reg0);
+        String reg2 = getRegister(data, reg); 
+        return longParse(reg1, reg2);
+    }
+    public double getReal4(String data, int reg0, int reg){
+        String reg1 = getRegister(data, reg0);
+        String reg2 = getRegister(data, reg);
+        return magnitudeDecider(reg1, reg2);
+    }
+    
+    
+    public String getLanguage(String data){
+        int langNum = Integer.parseInt(getRegister(data, 96));
+        String language = "";
+        switch(langNum){
+            case 0: language  = "English"; break;
+            case 1: language  = "Chinese"; break;
+            default: language = "Error";
+        }
+        return language;
+    }
+    
+    public int getWorkingStep(String data){
+        String workingStep = getRegister(data, 92);
+        String temp = Long.toBinaryString(Integer.parseInt(workingStep));
+        while(temp.length() < 16){
+            temp = "0" + temp;
+        }
+        //We want the first half.
+        String workingBinary = temp.substring(0, temp.length()/2);
+        //2 stands for base 2
+        int workingSt = Integer.parseInt(workingBinary, 2);
+        return workingSt;
     }
     
     public int getSignal(String data) {
         String signal = getRegister(data, 92);
         return signalQuality(signal);
-    }
-
-    public double getTemperature(String data) {
-        String reg33 = getRegister(data, 33);
-        String reg34 = getRegister(data, 34);
-        return round(2, temperature(reg33, reg34));
-    }
-
-    public double getNegativeEnergy(String data) {
-        String reg21 = getRegister(data, 21);
-        String reg22 = getRegister(data, 22);
-        return negativeEnergy(reg21, reg22);
     }
     
     private int signalQuality(String value) {
@@ -128,7 +152,7 @@ public class Model {
         while(temp.length() < 16){
             temp = "0" + temp;
         }
-        //We want the latter half. Because modbus...
+        //We want the latter half.
         String signalBinary = temp.substring(temp.length()/2);
         //2 stands for base 2
         int signalQuality = Integer.parseInt(signalBinary, 2);
@@ -136,20 +160,20 @@ public class Model {
     }
     
     //Is this really right? Idk how else to get the correct value though.
-    private double negativeEnergy(String strReg21, String strReg22){
-        int reg21 = Integer.parseInt(strReg21);
-        int reg22 = Integer.parseInt(strReg22);
-        return (reg21-reg22-1);
+    private double longParse(String strReg1, String strReg2){
+        int reg1 = Integer.parseInt(strReg1);
+        int reg2 = Integer.parseInt(strReg2);
+        return (reg1-reg2-1);
     }
     
-    private double temperature(String reg33, String reg34){
+    private double real4(String reg1, String reg2){
         //-1^sign * 2^exponent * mantissa
         int sign;
         int exponent;
         double mantissa;
         
-        int highWord = Integer.parseInt(reg33);
-        int lowWord = Integer.parseInt(reg34);
+        int highWord = Integer.parseInt(reg1);
+        int lowWord = Integer.parseInt(reg1);
         
         String[] highNlow = {Integer.toBinaryString(highWord), Integer.toBinaryString(lowWord)};
         
@@ -183,13 +207,63 @@ public class Model {
             mantissa = mantissa/4194304;
         }
         
-        
-        double a = Math.pow(-1, sign);
-        double b = Math.pow(2, exponent);
-        double c = mantissa;
-        
-        return a*b*c;
+        //                      -1^sign   * 2^exponent            * mantissa
+        double real4 = Math.pow(-1, sign) * Math.pow(2, exponent) * mantissa;
+        return real4;
     }
     
+    //Calculates distance from 0 (think x*10 or x*10^-1) where the ^n is the magnitude
+    private int magnitude (double number){
+        int mag = 0;
+        
+        //Number is between 0 and 1 (this most likely means it looks like this 0.0000000000001 ish)
+        if(number < 1 && number > 0){
+            while(number < 1){
+                number = number * 10;
+                mag++;
+            }
+        //Number is greater than 1
+        }else if(number > 1){
+            while(number > 1){
+                number = number / 10;
+                mag++;
+            }
+        //Number is less than or equal to 0
+        }else{
+            number = number*(-1);//Flips number to be positive
+            //Number is less than 0 and greater than -1(before the flip to positive)
+            if(number < 1 && number > 0){
+                while(number < 1){
+                    number = number * 10;
+                    mag++;
+                }
+            }
+            //Number is less than or equal to -1 (before the flip to positive)
+            else{
+                while(number > 1){
+                    number = number / 10;
+                    mag++;
+                }
+            }
+            
+        }
+        
+        return mag;
+    }
+    private double magnitudeDecider(String reg1, String reg2){
+        double result;
+        //Reality check... Maybe the temperature isn't 0.0000000001C or a few million C
+        double val1 = real4(reg1, reg2);
+        double val2 = real4(reg2, reg1);
+        int mag1 = magnitude(val1);
+        int mag2 = magnitude(val2);
+        System.out.println("magnitude("+reg1+","+reg2+"): " + "val1="+val1+" val2="+val2 + " mag= " + mag1 + " | " + mag2);
+        if(mag1 < mag2 && mag1 != 0 || mag1 == 0 && mag2 > 12){
+            result = val1;
+        }else{
+            result = val2;
+        }
+        return result;
+    }
     
 }
