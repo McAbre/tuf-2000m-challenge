@@ -59,14 +59,6 @@ public class Model {
         while((type + spaces + value + unit).length() < width){
             spaces += " ";
         }
-        
-        try{
-            
-            
-            System.out.println("model.Model.fixLength() d= "+value);
-        }catch(NumberFormatException e){
-        }
-        
         return (type + spaces + value + unit);
     }
     
