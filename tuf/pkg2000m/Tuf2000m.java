@@ -32,6 +32,7 @@ public class Tuf2000m extends Application {
                     FXMLLoader viewLoader = new FXMLLoader(getClass().getResource("/view/FXML.fxml"));
                     
                     Scene scene = new Scene(viewLoader.load());
+                    scene.getStylesheets().add("/view/style.css");
                     primaryStage.setScene(scene);
                     
                     primaryStage.show();

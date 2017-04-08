@@ -22,6 +22,7 @@ public class Controller {
     public Controller(){
         instance = this;
         listView = new ListView();
+        listView.applyCss();
     }
     
     public static synchronized Controller getInstance(){

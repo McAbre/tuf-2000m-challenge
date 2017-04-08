@@ -5,12 +5,10 @@
  */
 package model;
 
-import java.awt.Font;
-import java.awt.FontMetrics;
-import java.awt.geom.Rectangle2D;
 import java.math.BigDecimal;
 import java.math.RoundingMode;
 import java.net.URL;
+import java.text.DecimalFormat;
 import java.util.Scanner;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
@@ -53,22 +51,23 @@ public class Model {
     }
     
     public String fixLength(String type, String value, String unit){
-        int width = 335;
+        int width = 41;
         String spaces = "";
-        
-        Font font = new Font("Arial", Font.PLAIN, 13);
-        FontMetrics metrics = new FontMetrics(font) {  
-        };
-        Rectangle2D bounds = metrics.getStringBounds(type + spaces + value + " " + unit, null);  
-        int widthInPixels = (int) bounds.getWidth(); 
-        
-        while(widthInPixels < width){
+        if(!unit.equals("")){
+            unit = " " + unit;
+        }
+        while((type + spaces + value + unit).length() < width){
             spaces += " ";
-            bounds = metrics.getStringBounds(type + spaces + value + " " + unit, null);  
-            widthInPixels = (int) bounds.getWidth(); 
         }
         
-        return (type + spaces + value + " " + unit);
+        try{
+            
+            
+            System.out.println("model.Model.fixLength() d= "+value);
+        }catch(NumberFormatException e){
+        }
+        
+        return (type + spaces + value + unit);
     }
     
     public ObservableList search(String searchPhrase){
